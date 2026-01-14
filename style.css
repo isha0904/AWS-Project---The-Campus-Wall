@@ -30,6 +30,19 @@ body {
   border-radius: 20px;
 }
 
+.delete-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.delete-btn:hover {
+  text-decoration: underline;
+}
+
 /* Filters */
 .filters {
   display: flex;
@@ -160,6 +173,7 @@ select {
   color: white;
   border: none;
   border-radius: 25px;
+  cursor: pointer;
 }
 
 .back {

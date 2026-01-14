@@ -26,26 +26,8 @@
     </div>
 
     <!-- Posts Wall -->
-    <main class="wall">
-      <div class="post-card" data-category="win" onclick="openModal()">
-        <span class="tag win">Win</span>
-        <h3>Finally spoke on stage</h3>
-        <p class="preview">
-          I’ve always been scared of public speaking but today I finally went up
-          and spoke…
-        </p>
-        <div class="meta">❤️ 12 · 💬 4</div>
-      </div>
-
-      <div class="post-card" data-category="confession" onclick="openModal()">
-        <span class="tag confession">Confession</span>
-        <h3>I feel lost lately</h3>
-        <p class="preview">
-          Everyone seems to have their life figured out except me and I don’t
-          know…
-        </p>
-        <div class="meta">🤍 20 · 💬 6</div>
-      </div>
+    <main class="wall" id="wall">
+      <div class="post-card" data-category="win" onclick="openModal()"></div>
     </main>
 
     <!-- Modal -->
@@ -53,54 +35,91 @@
       <div class="modal-content">
         <span class="close" onclick="closeModal()">×</span>
 
-        <span class="tag win">Win</span>
-        <h2>Finally spoke on stage</h2>
-        <p class="full-text">
-          I’ve always been scared of public speaking but today I finally went up
-          and spoke in front of everyone. My hands were shaking but I did it.
-        </p>
-
-        <!-- Reactions -->
-        <div class="reactions">
-          <button>❤️ 12</button>
-          <button>🤍 7</button>
-          <button>🤝 4</button>
-        </div>
-
-        <!-- Comments -->
-        <div class="comments">
-          <h4>Comments</h4>
-          <p class="comment">Anonymous: Proud of you 🌱</p>
-          <p class="comment">Anonymous: This gave me courage.</p>
-
-          <textarea placeholder="Respond with kindness..."></textarea>
-          <button class="comment-btn">Post Comment</button>
-        </div>
+        <span class="tag"></span>
+        <h2></h2>
+        <p class="full-text"></p>
       </div>
     </div>
 
+    <!-- Render posts from localStorage -->
+    <script>
+      const wall = document.getElementById("wall");
+
+      function renderPosts(filter = "all") {
+        const wall = document.getElementById("wall");
+        wall.innerHTML = "";
+
+        const posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+        posts.forEach((post) => {
+          if (filter !== "all" && post.tag !== filter) return;
+
+          const card = document.createElement("div");
+          card.className = "post-card";
+          card.onclick = () => openModal(post);
+
+          card.innerHTML = `
+      <span class="tag ${post.tag}">${post.tag}</span>
+      <h3>${post.title}</h3>
+      <p class="preview">${post.content.slice(0, 100)}...</p>
+      <button class="delete-btn" onclick="deletePost(${
+        post.id
+      }, event)">Delete</button>
+    `;
+
+          wall.appendChild(card);
+        });
+      }
+
+      // initial load
+      renderPosts();
+    </script>
+    <script>
+      function deletePost(postId, event) {
+        event.stopPropagation();
+
+        if (!confirm("Delete this post?")) return;
+
+        let posts = JSON.parse(localStorage.getItem("posts")) || [];
+        posts = posts.filter((post) => post.id !== postId);
+        localStorage.setItem("posts", JSON.stringify(posts));
+
+        const activeFilter =
+          document.querySelector(".filter.active")?.dataset.filter || "all";
+
+        renderPosts(activeFilter); // 🔥 immediate UI update
+      }
+    </script>
+
+    <script>
+      function openModal(post) {
+        const modal = document.getElementById("postModal");
+
+        modal.style.display = "flex";
+
+        modal.querySelector(".tag").innerText = post.tag;
+        modal.querySelector(".tag").className = `tag ${post.tag}`;
+
+        modal.querySelector("h2").innerText = post.title;
+        modal.querySelector(".full-text").innerText = post.content;
+      }
+
+      function closeModal() {
+        document.getElementById("postModal").style.display = "none";
+      }
+    </script>
+
+    <!-- Filter logic -->
     <script>
       const filterButtons = document.querySelectorAll(".filter");
-      const posts = document.querySelectorAll(".post-card");
 
       filterButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          // remove active class from all buttons
           filterButtons.forEach((btn) => btn.classList.remove("active"));
           button.classList.add("active");
 
           const filter = button.getAttribute("data-filter");
-
-          posts.forEach((post) => {
-            if (
-              filter === "all" ||
-              post.getAttribute("data-category") === filter
-            ) {
-              post.style.display = "block";
-            } else {
-              post.style.display = "none";
-            }
-          });
+          renderPosts(filter);
         });
       });
     </script>

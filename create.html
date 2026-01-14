@@ -1,32 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-  <title>Create Post</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+      charset="UTF-8"
+    />
+    <title>Create Post</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Create a Post</h2>
+      <p class="subtitle">Your identity stays anonymous.</p>
 
-  <div class="form-container">
-    <h2>Create a Post</h2>
-    <p class="subtitle">Your identity stays anonymous.</p>
+      <label>Post Type</label>
+      <select title="tag">
+        <option>Win</option>
+        <option>Confession</option>
+        <option>Thought</option>
+      </select>
 
-    <label>Post Type</label>
-    <select title="tag">
-      <option>Win</option>
-      <option>Confession</option>
-      <option>Thought</option>
-    </select>
+      <label>Headline</label>
+      <input type="text" placeholder="Give your post a title" />
 
-    <label>Headline</label>
-    <input type="text" placeholder="Give your post a title">
+      <label>Content</label>
+      <textarea placeholder="Say what you want to say..."></textarea>
 
-    <label>Content</label>
-    <textarea placeholder="Say what you want to say..."></textarea>
+      <button class="submit-btn" onclick="savePost()">Post</button>
+      <a href="index.html" class="back">← Back to Wall</a>
+    </div>
 
-    <button class="submit-btn">Post to the Wall</button>
-    <a href="index.html" class="back">← Back to Wall</a>
-  </div>
+    <script>
+      function savePost() {
+        const tag = document.querySelector("select").value;
+        const title = document.querySelector("input").value;
+        const content = document.querySelector("textarea").value;
 
-</body>
+        if (!title || !content) {
+          alert("Please fill all fields");
+          return;
+        }
+
+        const post = {
+          id: Date.now(),
+          tag: tag.toLowerCase(),
+          title,
+          content,
+        };
+
+        const posts = JSON.parse(localStorage.getItem("posts")) || [];
+        posts.unshift(post); // newest first
+        localStorage.setItem("posts", JSON.stringify(posts));
+
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
 </html>
