@@ -1,0 +1,170 @@
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f6f7f8;
+  color: #333;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.create-btn {
+  text-decoration: none;
+  background: #4f46e5;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 20px;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.filter {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #e5e7eb;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: #4f46e5;
+  color: white;
+}
+
+/* Wall */
+.wall {
+  max-width: 700px;
+  margin: auto;
+  padding: 10px;
+}
+
+.post-card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.win {
+  background: #dcfce7;
+}
+.confession {
+  background: #fee2e2;
+}
+.thought {
+  background: #e0e7ff;
+}
+
+.preview {
+  color: #555;
+}
+
+.meta {
+  font-size: 12px;
+  color: #777;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Reactions & Comments */
+.reactions button {
+  border: none;
+  background: #f1f5f9;
+  margin-right: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.comments textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.comment-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+}
+
+/* Create Page */
+.form-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 25px;
+}
+
+.back {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #555;
+}

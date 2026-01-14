@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+      charset="UTF-8"
+    />
+    <title>The Campus Wall</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <h1>The Campus Wall</h1>
+      <p class="subtitle">Anonymous wins, confessions & thoughts</p>
+      <a href="create.html" class="create-btn">Create Post</a>
+    </header>
+
+    <!-- Category Filter -->
+    <div class="filters">
+      <button class="filter active">All</button>
+      <button class="filter">Wins</button>
+      <button class="filter">Confessions</button>
+      <button class="filter">Thoughts</button>
+    </div>
+
+    <!-- Posts Wall -->
+    <main class="wall">
+      <div class="post-card" onclick="openModal()">
+        <span class="tag win">Win</span>
+        <h3>Finally spoke on stage</h3>
+        <p class="preview">
+          I’ve always been scared of public speaking but today I finally went up
+          and spoke…
+        </p>
+        <div class="meta">❤️ 12 · 💬 4</div>
+      </div>
+
+      <div class="post-card" onclick="openModal()">
+        <span class="tag confession">Confession</span>
+        <h3>I feel lost lately</h3>
+        <p class="preview">
+          Everyone seems to have their life figured out except me and I don’t
+          know…
+        </p>
+        <div class="meta">🤍 20 · 💬 6</div>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="postModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">×</span>
+
+        <span class="tag win">Win</span>
+        <h2>Finally spoke on stage</h2>
+        <p class="full-text">
+          I’ve always been scared of public speaking but today I finally went up
+          and spoke in front of everyone. My hands were shaking but I did it.
+        </p>
+
+        <!-- Reactions -->
+        <div class="reactions">
+          <button>❤️ 12</button>
+          <button>🤍 7</button>
+          <button>🤝 4</button>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments">
+          <h4>Comments</h4>
+          <p class="comment">Anonymous: Proud of you 🌱</p>
+          <p class="comment">Anonymous: This gave me courage.</p>
+
+          <textarea placeholder="Respond with kindness..."></textarea>
+          <button class="comment-btn">Post Comment</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openModal() {
+        document.getElementById("postModal").style.display = "flex";
+      }
+      function closeModal() {
+        document.getElementById("postModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
