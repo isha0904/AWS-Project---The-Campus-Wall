@@ -19,15 +19,15 @@
 
     <!-- Category Filter -->
     <div class="filters">
-      <button class="filter active">All</button>
-      <button class="filter">Wins</button>
-      <button class="filter">Confessions</button>
-      <button class="filter">Thoughts</button>
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="win">Wins</button>
+      <button class="filter" data-filter="confession">Confessions</button>
+      <button class="filter" data-filter="thought">Thoughts</button>
     </div>
 
     <!-- Posts Wall -->
     <main class="wall">
-      <div class="post-card" onclick="openModal()">
+      <div class="post-card" data-category="win" onclick="openModal()">
         <span class="tag win">Win</span>
         <h3>Finally spoke on stage</h3>
         <p class="preview">
@@ -37,7 +37,7 @@
         <div class="meta">❤️ 12 · 💬 4</div>
       </div>
 
-      <div class="post-card" onclick="openModal()">
+      <div class="post-card" data-category="confession" onclick="openModal()">
         <span class="tag confession">Confession</span>
         <h3>I feel lost lately</h3>
         <p class="preview">
@@ -80,12 +80,29 @@
     </div>
 
     <script>
-      function openModal() {
-        document.getElementById("postModal").style.display = "flex";
-      }
-      function closeModal() {
-        document.getElementById("postModal").style.display = "none";
-      }
+      const filterButtons = document.querySelectorAll(".filter");
+      const posts = document.querySelectorAll(".post-card");
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // remove active class from all buttons
+          filterButtons.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+
+          const filter = button.getAttribute("data-filter");
+
+          posts.forEach((post) => {
+            if (
+              filter === "all" ||
+              post.getAttribute("data-category") === filter
+            ) {
+              post.style.display = "block";
+            } else {
+              post.style.display = "none";
+            }
+          });
+        });
+      });
     </script>
   </body>
 </html>
