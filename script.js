@@ -12,7 +12,8 @@ async function renderPosts(filter = "all") {
 
   try {
     const res = await fetch(`${API_ENDPOINT}/posts`);
-    const posts = await res.json();
+    const data = await res.json();
+    const posts = JSON.parse(data.body); // ✅ FIX
 
     wall.innerHTML = "";
 
@@ -39,6 +40,7 @@ async function renderPosts(filter = "all") {
     console.error(err);
   }
 }
+
 
 // DELETE POST
 async function deletePost(postid, event) {
@@ -115,6 +117,29 @@ async function savePost() {
     console.error(err);
   }
 }
+
+function openInfoModal(type) {
+  const modal = document.getElementById("infoModal");
+  const title = document.getElementById("infoTitle");
+  const text = document.getElementById("infoText");
+
+  if (type === "about") {
+    title.innerText = "About The Campus Wall";
+    text.innerText =
+      "The Campus Wall is a safe, anonymous space for students to share wins, thoughts, and confessions — no judgement, just voices.";
+  } else {
+    title.innerText = "Contact";
+    text.innerText =
+      "Have feedback or ideas?\nReach out at: baviskarisha2194@gmail.com";
+  }
+
+  modal.style.display = "flex";
+}
+
+function closeInfoModal() {
+  document.getElementById("infoModal").style.display = "none";
+}
+
 
 // ================= INITIAL LOAD =================
 document.addEventListener("DOMContentLoaded", () => {

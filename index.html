@@ -12,8 +12,21 @@
   <body>
     <!-- Header -->
     <header class="header">
-      <h1>The Campus Wall</h1>
-      <p class="subtitle">Anonymous wins, confessions & thoughts</p>
+      <div class="header-top">
+        <div class="logo-space"></div>
+
+        <div class="header-links">
+          <span onclick="openInfoModal('about')">About</span>
+          <span onclick="openInfoModal('contact')">Contact</span>
+        </div>
+      </div>
+
+      <h1 class="main-title">The Campus Wall</h1>
+
+      <p class="subtitle">
+        Where thoughts whisper, wins shine & confessions breathe 🌱
+      </p>
+
       <a href="create.html" class="create-btn">Create Post</a>
     </header>
 
@@ -38,6 +51,14 @@
         <span class="tag"></span>
         <h2></h2>
         <p class="full-text"></p>
+      </div>
+    </div>
+
+    <div class="modal" id="infoModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeInfoModal()">×</span>
+        <h2 id="infoTitle"></h2>
+        <p id="infoText"></p>
       </div>
     </div>
 
