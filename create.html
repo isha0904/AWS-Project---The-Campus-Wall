@@ -31,30 +31,6 @@
       <a href="index.html" class="back">← Back to Wall</a>
     </div>
 
-    <script>
-      function savePost() {
-        const tag = document.querySelector("select").value;
-        const title = document.querySelector("input").value;
-        const content = document.querySelector("textarea").value;
-
-        if (!title || !content) {
-          alert("Please fill all fields");
-          return;
-        }
-
-        const post = {
-          id: Date.now(),
-          tag: tag.toLowerCase(),
-          title,
-          content,
-        };
-
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-        posts.unshift(post); // newest first
-        localStorage.setItem("posts", JSON.stringify(posts));
-
-        window.location.href = "index.html";
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
