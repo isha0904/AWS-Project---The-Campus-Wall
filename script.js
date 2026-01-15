@@ -1,57 +1,72 @@
-// ---------- COMMON ----------
-function $(selector) {
-  return document.querySelector(selector);
-}
+// -- API ENDPOINTS --
+var API_ENDPOINT= "https://rxk4fglqj6.execute-api.eu-north-1.amazonaws.com/prod";
 
-// ---------- INDEX PAGE LOGIC ----------
+// ================= INDEX PAGE =================
 const wall = document.getElementById("wall");
 
-function renderPosts(filter = "all") {
-  if (!wall) return; // prevents errors on create.html
+// GET POSTS
+async function renderPosts(filter = "all") {
+  if (!wall) return;
 
-  wall.innerHTML = "";
+  wall.innerHTML = "<p>Loading...</p>";
 
-  const posts = JSON.parse(localStorage.getItem("posts")) || [];
+  try {
+    const res = await fetch(`${API_ENDPOINT}/posts`);
+    const posts = await res.json();
 
-  posts.forEach((post) => {
-    if (filter !== "all" && post.tag !== filter) return;
+    wall.innerHTML = "";
 
-    const card = document.createElement("div");
-    card.className = "post-card";
-    card.onclick = () => openModal(post);
+    posts.forEach((post) => {
+      if (filter !== "all" && post.tag !== filter) return;
 
-    card.innerHTML = `
-      <span class="tag ${post.tag}">${post.tag}</span>
-      <h3>${post.title}</h3>
-      <p class="preview">${post.content.slice(0, 100)}...</p>
-      <button class="delete-btn" onclick="deletePost(${post.id}, event)">Delete</button>
-    `;
+      const card = document.createElement("div");
+      card.className = "post-card";
+      card.onclick = () => openModal(post);
 
-    wall.appendChild(card);
-  });
+      card.innerHTML = `
+        <span class="tag ${post.tag}">${post.tag}</span>
+        <h3>${post.title}</h3>
+        <p class="preview">${post.content.slice(0, 100)}...</p>
+        <button class="delete-btn" onclick="deletePost('${post.postid}', event)">
+          Delete
+        </button>
+      `;
+
+      wall.appendChild(card);
+    });
+  } catch (err) {
+    wall.innerHTML = "<p>Error loading posts</p>";
+    console.error(err);
+  }
 }
 
-function deletePost(postId, event) {
+// DELETE POST
+async function deletePost(postid, event) {
   event.stopPropagation();
 
   if (!confirm("Delete this post?")) return;
 
-  let posts = JSON.parse(localStorage.getItem("posts")) || [];
-  posts = posts.filter((post) => post.id !== postId);
-  localStorage.setItem("posts", JSON.stringify(posts));
+  try {
+    await fetch(`${API_ENDPOINT}/posts/${postid}`, {
+      method: "DELETE",
+    });
 
-  const activeFilter =
-    document.querySelector(".filter.active")?.dataset.filter || "all";
+    const activeFilter =
+      document.querySelector(".filter.active")?.dataset.filter || "all";
 
-  renderPosts(activeFilter);
+    renderPosts(activeFilter);
+  } catch (err) {
+    alert("Failed to delete post");
+    console.error(err);
+  }
 }
 
+// MODAL
 function openModal(post) {
   const modal = document.getElementById("postModal");
   if (!modal) return;
 
   modal.style.display = "flex";
-
   modal.querySelector(".tag").innerText = post.tag;
   modal.querySelector(".tag").className = `tag ${post.tag}`;
   modal.querySelector("h2").innerText = post.title;
@@ -59,26 +74,24 @@ function openModal(post) {
 }
 
 function closeModal() {
-  const modal = document.getElementById("postModal");
-  if (modal) modal.style.display = "none";
+  document.getElementById("postModal").style.display = "none";
 }
 
-// ---------- FILTER LOGIC ----------
-const filterButtons = document.querySelectorAll(".filter");
-
-filterButtons.forEach((button) => {
+// FILTER BUTTONS
+document.querySelectorAll(".filter").forEach((button) => {
   button.addEventListener("click", () => {
-    filterButtons.forEach((btn) => btn.classList.remove("active"));
+    document.querySelectorAll(".filter").forEach((btn) =>
+      btn.classList.remove("active")
+    );
     button.classList.add("active");
 
-    const filter = button.dataset.filter;
-    renderPosts(filter);
+    renderPosts(button.dataset.filter);
   });
 });
 
-// ---------- CREATE PAGE LOGIC ----------
-function savePost() {
-  const tag = document.querySelector("select")?.value;
+// ================= CREATE PAGE =================
+async function savePost() {
+  const tag = document.querySelector("select")?.value.toLowerCase();
   const title = document.querySelector("input")?.value;
   const content = document.querySelector("textarea")?.value;
 
@@ -87,21 +100,23 @@ function savePost() {
     return;
   }
 
-  const post = {
-    id: Date.now(),
-    tag: tag.toLowerCase(),
-    title,
-    content,
-  };
+  try {
+    await fetch(`${API_ENDPOINT}/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tag, title, content }),
+    });
 
-  const posts = JSON.parse(localStorage.getItem("posts")) || [];
-  posts.unshift(post);
-  localStorage.setItem("posts", JSON.stringify(posts));
-
-  window.location.href = "index.html";
+    window.location.href = "index.html";
+  } catch (err) {
+    alert("Failed to create post");
+    console.error(err);
+  }
 }
 
-// ---------- INITIAL LOAD ----------
+// ================= INITIAL LOAD =================
 document.addEventListener("DOMContentLoaded", () => {
   renderPosts();
 });
