@@ -1,5 +1,5 @@
 import json
-import boto3
+import boto3 # type: ignore
 
 # DynamoDB resource (same region as Lambda)
 dynamodb = boto3.resource('dynamodb')
