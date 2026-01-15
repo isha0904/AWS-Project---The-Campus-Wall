@@ -130,7 +130,7 @@ function openInfoModal(type) {
   } else {
     title.innerText = "Contact";
     text.innerText =
-      "Have feedback or ideas?\nReach out at: baviskarisha2194@gmail.com";
+      "Have feedback or ideas?\nReach out at: deadpool.nocomments@gmail.com";
   }
 
   modal.style.display = "flex";
